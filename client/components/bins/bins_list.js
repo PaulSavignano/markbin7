@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { createContainer } from 'meteor/react-meteor-data'
+import { Link, browserHistory } from 'react-router'
 
 import { Bins } from '../../../imports/collections/bins'
 
@@ -10,9 +11,10 @@ class BinsList extends Component {
   }
   renderList() {
     return this.props.bins.map((bin) => {
+      const url = `bins/${bin._id}`
       return (
         <li key={bin._id} className="list-group-item">
-          Bin: {bin._id}
+          <Link to={url}>Bin: {bin._id}</Link>
           <span className="pull-right">
             <button
               onClick={() => this.onBinRemove(bin)}
@@ -36,5 +38,6 @@ class BinsList extends Component {
 
 export default createContainer(() =>{
   Meteor.subscribe('bins')
+  Meteor.subscribe('sharedBins')
   return { bins: Bins.find({}).fetch() }
 }, BinsList)
